@@ -78,7 +78,7 @@ public class WriteActivity extends AppCompatActivity {
         username = LoginUserInfo.getString("username",null);
         Log.d("mytag", "username: "+username);
         if(username == null) {
-            Toast.makeText(WriteActivity.this, "로그인을 해주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(WriteActivity.this, "로그인을 해 주세요.", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(getApplicationContext(), SignInActivity.class));
             finish();
         }
@@ -98,12 +98,14 @@ public class WriteActivity extends AppCompatActivity {
                 // 파일 이름 정해야 함.
 
                 Call <String> apiCall = apiService.createArticle(username, title, contentbox, part);
-                Log.d("mytag", "이름: "+username);
+                Log.d("mytag", "이름: "+ username);
+                Log.d("mytag", "파일 이름 : " + part);
+
                 apiCall.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
-                        Log.d("mytag", "업로드 결과: "+response.body());
-                        startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+                        Log.d("mytag", "업로드 결과: "+ response.body());
+                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                         finish();
                     }
 
@@ -141,9 +143,9 @@ public class WriteActivity extends AppCompatActivity {
         try {
             if(requestCode == REQ_SELECT) {
                 Log.d("mytag", intent.getData().toString());
-                // 인텐트에 데이터가 담겨있다면
+                // 인텐트에 데이터가 담겨 있다면
                 if(!intent.getData().equals(null)) {
-                    // intent에 담긴 이미지를 uri를 이용해서 bitmap 형태로 읽어온다.
+                    // intent에 담긴 이미지를 uri를 이용해서 bitmap 형태로 읽어 온다.
                     selPhoto = MediaStore.Images.Media.getBitmap(getContentResolver(), intent.getData());
                     selPhoto = Bitmap.createScaledBitmap(selPhoto, 500, 500, true);
                     showPicture.setImageBitmap(selPhoto);

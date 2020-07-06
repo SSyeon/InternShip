@@ -2,6 +2,7 @@ package kr.hs.emrim.tjdusdlfkrhd.internship;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -25,21 +27,24 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ListActivity extends AppCompatActivity {
-    LinearLayout list;
+    SharedPreferences.Editor editor;
+    private TextView textView2;
+    private Context mContext;
     private Retrofit retrofit;
     private ImageView postingbtn;
     private ImageView post_backBtn;
     private ImageView mypageBtn;
     public List<Article> articles;
     RecyclerView mRecyclerView;
-    LinearLayout usercontent;
+
+    SharedPreferences LoginUserInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-
-        usercontent = (LinearLayout) findViewById(R.id.container);
+        mContext=this;
+        LoginUserInfo = getSharedPreferences("userlogininfo", MODE_PRIVATE);
 
         retrofit = new Retrofit.Builder().baseUrl(RedayService.URL).addConverterFactory(GsonConverterFactory.create()).build();
         final RedayService apiService = retrofit.create(RedayService.class);
@@ -47,10 +52,19 @@ public class ListActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.recyclerView1);
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        //나라별
+        SharedPreferences CountryInfo = mContext.getSharedPreferences("CountryInfo",MODE_PRIVATE);
+        String Country = CountryInfo.getString("Country", " ㅎ럴");
+        String City = CountryInfo.getString("City", " ㅎ럴");
+
+        Log.d("제발나라도시", "진짜야?: "+Country + City);
+
+        textView2 = findViewById(R.id.textView2); //도시 이름 표시
+        textView2.setText(City);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), mLinearLayoutManager.getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
-        final Call<List<Article>> apiCall = apiService.readArticlesDataAll();
+        final Call<List<Article>> apiCall = apiService.readCountryAtriclesDataAll(Country);
 
         apiCall.enqueue(new Callback<List<Article>>() {
             @Override
@@ -74,8 +88,11 @@ public class ListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // 저장된 값을 불러오기 위해 같은 네임파일을 찾음.
-//                Log.d("mytag", "앱 실행 시 유저 정보: "+LoginUserInfo.getString("username",null));
-                startActivity(new Intent(getApplicationContext(), MypageActivity.class));
+                String email = LoginUserInfo.getString("email",null);
+                Log.d("mytag", "앱 실행 시 유저 정보: " + email);
+                Intent intent  = new Intent(getApplicationContext(), MypageActivity.class);;
+                intent.putExtra("email", email);
+                startActivity(intent);
             }
         });
 
