@@ -23,8 +23,14 @@ public interface RedayService {
     Call<LoginResponse> loginUser(@Query("email") String email, @Query("password") String password);
 
     @Multipart
-    @POST("{username}/articles")
-    Call<String> createArticle(@Path("username") String username, @Query("title") String title, @Query("contents") String contents, @Part MultipartBody.Part file);
+    @POST("/{username}/articles/{country}")
+    Call<String> createArticle(
+            @Path("username") String username,
+            @Path("country") String country,
+            @Query("title") String title,
+            @Query("contents") String contents,
+            @Part MultipartBody.Part file
+    );
 
     // 유저 이름 가져오기.
    /*
@@ -40,8 +46,8 @@ public interface RedayService {
     @GET("all_countries")
     Call<List<Countries>> readCountriesDataAll();
 
-    @GET("{country}/articles")
-    Call<List<Article>> readCountryAtriclesDataAll(@Path("country") String country);
+    @GET("countries/{country}/articles")
+    Call<List<Article>> readCountryArticlesDataAll(@Path("country") String country);
 
 //    @GET("{username}/articles")
 //    Call<List<Article>> readArticlesData(@Path("username") String username);

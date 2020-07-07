@@ -32,7 +32,8 @@
             android:gravity="center"
             android:text="서울"
             android:textColor="@color/colorMain"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            />
 
         <ImageView
             android:id="@+id/post_search"

@@ -24,7 +24,6 @@ public class MypageAdapter extends RecyclerView.Adapter<MypageAdapter.CustomView
         protected TextView re_username;
         protected TextView re_text1;
         protected TextView re_text2;
-        protected TextView heart;
         protected ImageView re_image;
 
         public CustomViewHolder(View view){
@@ -32,7 +31,6 @@ public class MypageAdapter extends RecyclerView.Adapter<MypageAdapter.CustomView
             this.re_username= (TextView)view.findViewById(R.id.re_username);
             this.re_text1=(TextView)view.findViewById(R.id.re_text1);
             this.re_text2 = (TextView) view.findViewById(R.id.re_text2);
-            this.heart = (TextView) view.findViewById(R.id.count_heart);
             this.re_image = (ImageView) view.findViewById(R.id.re_image);
 
         }
@@ -54,7 +52,7 @@ public class MypageAdapter extends RecyclerView.Adapter<MypageAdapter.CustomView
 
         viewHolder.re_username.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         viewHolder.re_username.setGravity(Gravity.CENTER);
-        viewHolder.re_username.setText(mList.get(position).getUserName());
+//        viewHolder.re_username.setText(mList.get(position).getUser().getUserName());
 
         viewHolder.re_text1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         viewHolder.re_text1.setGravity(Gravity.CENTER);
@@ -64,13 +62,9 @@ public class MypageAdapter extends RecyclerView.Adapter<MypageAdapter.CustomView
         viewHolder.re_text2.setGravity(Gravity.CENTER);
         viewHolder.re_text2.setText(mList.get(position).getContents());
 
-        viewHolder.heart.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-        viewHolder.heart.setGravity(Gravity.CENTER);
-        viewHolder.heart.setText(Integer.toString(mList.get(position).getHeart()));
-
         // viewHolder.re_image.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         // viewHolder.re_image.setGravity(Gravity.CENTER);
-        viewHolder.re_image.setImageURI(Uri.fromFile(new File(String.valueOf(mList.get(position).getFile()))));
+//        viewHolder.re_image.setImageURI(Uri.fromFile(new File(String.valueOf(mList.get(position).getFile()))));
 }
 
     @Override

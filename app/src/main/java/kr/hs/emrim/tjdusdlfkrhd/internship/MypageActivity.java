@@ -54,7 +54,7 @@ public class MypageActivity extends AppCompatActivity {
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
         email = Objects.requireNonNull(getIntent().getExtras()).getString("email");
-        System.out.println("MyPageActivity email ="+ email);
+        System.out.println("MyPageActivity email = "+ email);
 
         final Call<List<Article>> apiCall = apiService.readArticlesData(email);
 
@@ -73,6 +73,8 @@ public class MypageActivity extends AppCompatActivity {
             public void onFailure(Call<List<Article>> call, Throwable t) {
                 Log.d("mytag", "fail" + t.getMessage());
             }
+
+
         });
 
         ImageView mypage_backBtn = findViewById(R.id.mypage_backBtn);
@@ -101,6 +103,12 @@ public class MypageActivity extends AppCompatActivity {
 
         TabHost tabHost1 = (TabHost) findViewById(R.id.tabHost1) ;
         tabHost1.setup() ;
+
+//        // 첫 번째 Tab. (탭 표시 텍스트:"TAB 1"), (페이지 뷰:"content1")
+//        TabHost.TabSpec ts1 = tabHost1.newTabSpec("Tab Spec 1") ;
+//        ts1.setContent(R.id.좋아요) ;
+//        ts1.setIndicator("좋아요",getResources().getDrawable(R.drawable.toggle_mypage_heart));
+//        tabHost1.addTab(ts1)  ;
 
         TabHost.TabSpec ts1 = tabHost1.newTabSpec("Tab Spec 1") ;
         ts1.setContent(R.id.글) ;

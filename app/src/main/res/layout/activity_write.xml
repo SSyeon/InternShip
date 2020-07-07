@@ -11,32 +11,36 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="59dp">
+        android:layout_height="wrap_content">
 
-        <Button
+        <TextView
             android:id="@+id/backBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:background="#00FFFFFF"
             android:fontFamily="@font/notosanscjkkr_demilight"
-            android:stateListAnimator="@null"
             android:text="취소"
-            android:textColor="#5A4DAB" />
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
+            android:textColor="@color/colorMain"
+            android:textSize="15sp"/>
+
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/Write"
+            android:layout_marginLeft="170dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:fontFamily="@font/notosanscjkkr_demilight"
             android:text="글쓰기"
-            android:textColor="#000000" />
+            android:gravity="center"
+            android:textColor="@color/colorMain"
+            android:textSize="24sp"  />
 
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/country"
+        android:id="@+id/cityTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
@@ -65,7 +69,7 @@
     <EditText
         android:id="@+id/contentBox"
         android:layout_width="match_parent"
-        android:layout_height="351dp"
+        android:layout_height="310dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/edittext_border"
         android:ems="10"
@@ -76,32 +80,32 @@
         android:scrollHorizontally="false"
         android:textSize="14sp" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp">
+        android:layout_height="wrap_content">
 
 
         <ImageButton
             android:id="@+id/inputimage"
-            android:layout_width="63dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="centerCrop"
+            android:layout_margin="10dp"
             android:background="#00FFFFFF"
             app:srcCompat="@drawable/ic_writing_imgicon" />
 
-        <Button
+        <TextView
             android:id="@+id/post"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="30dp"
-            android:background="#00FFFFFF"
+            android:layout_height="wrap_content"
+            android:textAlignment="textEnd"
+            android:layout_gravity="end"
             android:fontFamily="@font/notosanscjkkr_demilight"
-            android:stateListAnimator="@null"
             android:text="게시하기"
-            android:textColor="#FFCC1A"
-            android:textSize="18sp" />
-    </RelativeLayout>
+            android:layout_marginLeft="260dp"
+            android:textColor="@color/colorYellow"
+            android:textSize="20sp" />
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/showpicture"

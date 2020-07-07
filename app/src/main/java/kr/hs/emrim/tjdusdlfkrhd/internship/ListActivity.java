@@ -27,7 +27,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ListActivity extends AppCompatActivity {
-    SharedPreferences.Editor editor;
     private TextView textView2;
     private Context mContext;
     private Retrofit retrofit;
@@ -36,14 +35,16 @@ public class ListActivity extends AppCompatActivity {
     private ImageView mypageBtn;
     public List<Article> articles;
     RecyclerView mRecyclerView;
-
+    SharedPreferences CountryInfo;
     SharedPreferences LoginUserInfo;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         mContext=this;
+
         LoginUserInfo = getSharedPreferences("userlogininfo", MODE_PRIVATE);
 
         retrofit = new Retrofit.Builder().baseUrl(RedayService.URL).addConverterFactory(GsonConverterFactory.create()).build();
@@ -52,19 +53,21 @@ public class ListActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.recyclerView1);
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        LoginUserInfo=mContext.getSharedPreferences("saveuserInfo",MODE_PRIVATE);
+        //String username = saveuserinfo.getString("username");
         //나라별
-        SharedPreferences CountryInfo = mContext.getSharedPreferences("CountryInfo",MODE_PRIVATE);
+        CountryInfo = mContext.getSharedPreferences("CountryInfo",MODE_PRIVATE);
         String Country = CountryInfo.getString("Country", " ㅎ럴");
         String City = CountryInfo.getString("City", " ㅎ럴");
 
-        Log.d("제발나라도시", "진짜야?: "+Country + City);
+        Log.d("제발 나라 도시", "진짜야?: "+Country + City);
 
         textView2 = findViewById(R.id.textView2); //도시 이름 표시
         textView2.setText(City);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), mLinearLayoutManager.getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
-        final Call<List<Article>> apiCall = apiService.readCountryAtriclesDataAll(Country);
+        final Call<List<Article>> apiCall = apiService.readCountryArticlesDataAll(Country);
 
         apiCall.enqueue(new Callback<List<Article>>() {
             @Override
@@ -73,7 +76,6 @@ public class ListActivity extends AppCompatActivity {
 
                 CustomAdapter mAdapter = new CustomAdapter((ArrayList) articles);
                 mRecyclerView.setAdapter(mAdapter);
-
                 Log.d("mytag", articles.toString());
             }
 
@@ -89,9 +91,12 @@ public class ListActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // 저장된 값을 불러오기 위해 같은 네임파일을 찾음.
                 String email = LoginUserInfo.getString("email",null);
+                String username = LoginUserInfo.getString("username",null);
+
                 Log.d("mytag", "앱 실행 시 유저 정보: " + email);
                 Intent intent  = new Intent(getApplicationContext(), MypageActivity.class);;
                 intent.putExtra("email", email);
+                intent.putExtra("username", username);
                 startActivity(intent);
             }
         });
@@ -108,18 +113,18 @@ public class ListActivity extends AppCompatActivity {
         postingbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), WriteActivity.class));
+                String email = LoginUserInfo.getString("email",null);
+                String username = LoginUserInfo.getString("username",null);
+                String country = CountryInfo.getString("Country",null);
+                String city = CountryInfo.getString("City",null);
+                Log.d("mytag", "글쓸나라 : " + country);
+                Intent intent = new Intent(getApplicationContext(),WriteActivity.class);
+                intent.putExtra("country",country);
+                intent.putExtra("email", email);
+                intent.putExtra("username", username);
+                intent.putExtra("city", city);
+                startActivity(intent);
             }
         });
-
-//        ImageView comment_btn = findViewById(R.id.comment_btn);
-//        comment_btn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(getApplicationContext(), CommentActivity.class));
-//            }
-//        });
-
-
     }
 }

@@ -25,7 +25,9 @@ public class HomeActivity extends AppCompatActivity {
     private Context mContext;
     SharedPreferences LoginUserInfo;
     SharedPreferences.Editor editor;
+    SharedPreferences.Editor countryeditor;
     SharedPreferences CountryNameInfo;
+
     // retrofit
     Retrofit retrofit = (new Retrofit.Builder()).baseUrl(RedayService.URL).addConverterFactory(GsonConverterFactory.create()).build();
     final RedayService apiService = retrofit.create(RedayService.class);
@@ -39,11 +41,12 @@ public class HomeActivity extends AppCompatActivity {
         LoginUserInfo = getSharedPreferences("userlogininfo", MODE_PRIVATE);
         editor = LoginUserInfo.edit();
         CountryNameInfo = getSharedPreferences("CountryNameInfo", MODE_PRIVATE);
-        editor = CountryNameInfo.edit();
+        countryeditor = CountryNameInfo.edit();
 
         CardView seoul = findViewById(R.id.seoul);
         final TextView card1_city = findViewById(R.id.card1_city);
         final TextView card1_country = findViewById(R.id.card1_country);
+
         seoul.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,6 +55,7 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), ListActivity.class));
             }
         });
+
         CardView osaka = findViewById(R.id.osaka);
         final TextView card2_city = findViewById(R.id.card2_city);
         final TextView card2_country = findViewById(R.id.card2_country);
@@ -63,6 +67,7 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), ListActivity.class));
             }
         });
+
         CardView newyork = findViewById(R.id.newyork);
         final TextView card3_city = findViewById(R.id.card3_city);
         final TextView card3_country = findViewById(R.id.card3_country);
@@ -122,6 +127,7 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), ListActivity.class));
             }
         });
+
         CardView salarde = findViewById(R.id.salarde);
         final TextView card8_city = findViewById(R.id.card8_city);
         final TextView card8_country = findViewById(R.id.card8_country);
@@ -211,25 +217,25 @@ public class HomeActivity extends AppCompatActivity {
         final TextView card15_city = findViewById(R.id.card15_city);
         final TextView card15_country = findViewById(R.id.card15_country);
         tanzania.setOnClickListener(new View.OnClickListener() {
-            @Override
-                   public void onClick(View v) {
-                      Log.d("cityname", "나라: " + card15_city.getText());
-                      saveCountryInfo(card15_country.getText().toString(), card15_city.getText().toString());
-                       startActivity(new Intent(getApplicationContext(), ListActivity.class));
-                  }
-             }
+                                        @Override
+                                        public void onClick(View v) {
+                                            Log.d("cityname", "나라: " + card15_city.getText());
+                                            saveCountryInfo(card15_country.getText().toString(), card15_city.getText().toString());
+                                            startActivity(new Intent(getApplicationContext(), ListActivity.class));
+                                        }
+                                    }
         );
+
         ImageView mypageBtn = findViewById(R.id.home_icon);
         mypageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 saveuserinfo();
                 // 저장된 값을 불러오기 위해 같은 네임파일을 찾음.
-                // Log.d("mytag", "앱 실행 시 유저 정보 : " + LoginUserInfo.getString("username",null));
-                String email = LoginUserInfo.getString("email", null);
+               // Log.d("mytag", "앱 실행 시 유저 정보 : " + LoginUserInfo.getString("username",null));
+                String email = LoginUserInfo.getString("email",null);
                 Log.d("mytag", "앱 실행 시 유저 정보: " + email);
-                Intent intent = new Intent(getApplicationContext(), MypageActivity.class);
-                ;
+                Intent intent  = new Intent(getApplicationContext(), MypageActivity.class);;
                 intent.putExtra("email", email);
                 startActivity(intent);
             }
@@ -237,7 +243,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void saveuserinfo() {
-        Call<User> apiCall = apiService.getUser(LoginUserInfo.getString("email", null));
+        Call<User> apiCall = apiService.getUser(LoginUserInfo.getString("email",null));
         apiCall.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -246,7 +252,7 @@ public class HomeActivity extends AppCompatActivity {
                 editor.putString("username", name);
                 editor.putString("email", user.getEmail());
                 editor.commit();
-                Log.d("mytag", "username: " + name);
+                Log.d("mytag", "username: "+ name);
             }
 
             @Override
@@ -257,7 +263,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void saveCountryInfo(String country, String city) {
-        editor.clear();
+        countryeditor.clear();
         SharedPreferences CountryInfo = getSharedPreferences("CountryInfo", MODE_PRIVATE);
         SharedPreferences.Editor editor = CountryInfo.edit();
         editor.putString("Country", country); //First라는 key값으로 infoFirst 데이터를 저장한다.

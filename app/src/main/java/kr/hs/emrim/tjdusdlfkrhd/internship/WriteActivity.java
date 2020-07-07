@@ -21,6 +21,7 @@ import android.widget.Toast;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Objects;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -42,10 +43,12 @@ public class WriteActivity extends AppCompatActivity {
     String title;
     String contentbox;
     MultipartBody.Part part = null;
-
+    String country;
+    String city;
     TextView titleboxEdit;
     TextView contentboxEdit;
-    Button backBtn;
+    TextView cityTextView;
+    TextView backBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +63,7 @@ public class WriteActivity extends AppCompatActivity {
 
         titleboxEdit = findViewById(R.id.titleBox);
         contentboxEdit = findViewById(R.id.contentBox);
+        cityTextView = findViewById(R.id.cityTextView);
         ImageButton inputimgBtn = findViewById(R.id.inputimage);
         backBtn=findViewById(R.id.backBtn);
         backBtn.setOnClickListener(new View.OnClickListener() {
@@ -68,11 +72,16 @@ public class WriteActivity extends AppCompatActivity {
                 finish();
             }
         });
-        Button postBtn = findViewById(R.id.post);
+        TextView postBtn = findViewById(R.id.post);
         showPicture = findViewById(R.id.showpicture);
 
         LoginUserInfo = getSharedPreferences("userlogininfo", MODE_PRIVATE);
         final SharedPreferences.Editor editor = LoginUserInfo.edit();
+
+        country = Objects.requireNonNull(getIntent().getExtras()).getString("country");
+        city = Objects.requireNonNull(getIntent().getExtras()).getString("city");
+        cityTextView.setText(city);
+        Log.d("checkCountry", "country : "+country);
 
         // 유저 이름 가져옴.
         username = LoginUserInfo.getString("username",null);
@@ -96,8 +105,7 @@ public class WriteActivity extends AppCompatActivity {
                 RequestBody requestFile = RequestBody.create(MediaType.parse("image/png"), stream.toByteArray());
                 part = MultipartBody.Part.createFormData("file", "filename.png", requestFile);
                 // 파일 이름 정해야 함.
-
-                Call <String> apiCall = apiService.createArticle(username, title, contentbox, part);
+                Call <String> apiCall = apiService.createArticle(username, country, title, contentbox,part);
                 Log.d("mytag", "이름: "+ username);
                 Log.d("mytag", "파일 이름 : " + part);
 
